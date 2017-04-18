@@ -1,7 +1,6 @@
 # Set port where your application server will be running
 PORT=80
 
-APP_SECRET=""
 FB_VERIFY_TOKEN=""
 FB_PAGE_ACCESS_TOKEN=""
 

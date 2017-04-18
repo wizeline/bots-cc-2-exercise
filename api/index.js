@@ -1,5 +1,5 @@
 const Router = require('express').Router;
-const Webhook = require('../controller/webhook');
+const Webhook = require('../controller/Webhook');
 
 const router = new Router();
 
