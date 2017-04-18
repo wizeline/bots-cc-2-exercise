@@ -1,0 +1,36 @@
+{
+  "name": "bots-cc-2-exercise",
+  "version": "1.0.0",
+  "description": "Bots Crash Couse",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "lint": "eslint --ext .js ./",
+    "lint-fix": "eslint --fix --ext .js ./",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizeline/bots-cc-2-exercise.git"
+  },
+  "author": "Angel-Mu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wizeline/bots-cc-2-exercise/issues"
+  },
+  "homepage": "https://github.com/wizeline/bots-cc-2-exercise#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3"
+  }
+}
