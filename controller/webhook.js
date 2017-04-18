@@ -1,6 +1,6 @@
 const logger = require('../config/logger');
-const Echo = require('./Echo');
-const Sender = require('./Sender');
+const echo = require('./echo');
+const sender = require('./sender');
 
 const Webhook = () => ({
   /**
@@ -41,7 +41,7 @@ const Webhook = () => ({
             const messageText = message.text;
             switch (messageText) {
               default: {
-                messages = Echo.composeMessage(messagingEvent);
+                messages = echo.composeMessage(messagingEvent);
                 break;
               }
             }
@@ -51,7 +51,7 @@ const Webhook = () => ({
 
           // Send each composed message
           messages.forEach((message) => {
-            Sender
+            sender
               .sendMessage(userID, message)
               .then(logger.info)
               .catch(logger.error);
