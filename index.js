@@ -4,7 +4,7 @@ require('dotenv').load();
 
 const express = require('express');
 const configExpress = require('./config/express');
-const setupRoutes = require('./routes');
+const api = require('./api');
 
 // Setup server.
 
@@ -12,7 +12,7 @@ const app = express();
 configExpress(app);
 
 // Creating REST API
-setupRoutes(app);
+app.use('/', api);
 
 const server = app.listen(process.env.PORT);
 console.log(`Magic happens on port ${process.env.PORT}`);
