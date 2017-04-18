@@ -1,7 +1,8 @@
-// const composeInput = require('./inputComposer');
 const logger = require('../config/logger');
+const Echo = require('./Echo');
+const Sender = require('./Sender');
 
-const webhook = () => ({
+const Webhook = () => ({
   /**
    * Validate token
    */
@@ -18,78 +19,47 @@ const webhook = () => ({
    * Process Incoming Facebook Message
    */
   onPost: (req, res) => {
-    const data = req.body;
-    logger.info(JSON.stringify(data, null, 2));
-    // Basic Message Payload
-    // {
-    //   "object": "page",
-    //   "entry": [
-    //     {
-    //       "id": "687617881386521",
-    //       "time": 1492486513827,
-    //       "messaging": [
-    //         {
-    //           "sender": {
-    //             "id": "1193548610706791"
-    //           },
-    //           "recipient": {
-    //             "id": "687617881386521"
-    //           },
-    //           "timestamp": 1492486504700,
-    //           "message": {
-    //             "mid": "mid.$cAAIrka1UWPZhsGYI_FbfyDAxDyk-",
-    //             "seq": 240861,
-    //             "text": "hey"
-    //           }
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // }
-
-    // Make sure this is a page subscription
-    if (data.object === 'page') {
-      // Iterate over each entry
-      // There may be multiple if batched
-      data.entry.forEach((entry) => {
-        // let pageID = entry.id;
-        // let timeOfEvent = entry.time;
-
-        // Iterate over each messaging event
-        entry.messaging.forEach((messaging) => {
-          if (messaging.message) {
-            const messageText = messaging.message.text;
-            switch (messageText) {
-              default:
-                break;
-            }
-            // Subscribes to Message Received Callback
-            // composeInput(messaging);
-          } else if (messaging.postback) {
-            // Subscribes to Postback Received Callback
-            // composeInput(messaging);
-
-          } else if (messaging.optin) {
-            // Subscribes to Authentication Callback via the Send-to-Messenger Plugin
-
-          } else if (messaging.delivery) {
-            // Subscribes to Message Delivered Callback
-
-          } else if (messaging.read) { // Subscribes to Message Read Callback
-
-          } else {
-            console.log('Webhook received unknown messaging: ', messaging);
-          }
-        });
-      });
-    }
-
+    const body = req.body;
     // Assume everything went OK.
     //
     // You must send back a 200, within 20 seconds, to let us know you've
     // successfully received the callback. Otherwise, the request will time out.
     res.sendStatus(200);
+
+    // Make sure this is a page subscription
+    if (body.object === 'page') {
+      // Iterate over each entry
+      // There may be multiple if batched
+      body.entry.forEach((entry) => {
+        entry.messaging.forEach((messagingEvent) => {
+          const userID = messagingEvent.sender.id;
+          let messages = [];
+
+          // By now we are only handling incoming messages
+          if (messagingEvent.message) {
+            const message = messagingEvent.message;
+            const messageText = message.text;
+            switch (messageText) {
+              default: {
+                messages = Echo.composeMessage(messagingEvent);
+                break;
+              }
+            }
+          } else {
+            // logger.warn('Webhook received unknown messagingEvent: ', messagingEvent);
+          }
+
+          // Send each composed message
+          messages.forEach((message) => {
+            Sender
+              .sendMessage(userID, message)
+              .then(logger.info)
+              .catch(logger.error);
+          });
+        });
+      });
+    }
   },
 });
 
-module.exports = webhook();
+module.exports = Webhook();
