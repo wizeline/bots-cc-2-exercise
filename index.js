@@ -4,7 +4,9 @@ require('dotenv').load();
 
 const express = require('express');
 const configExpress = require('./config/express');
+const logger = require('./config/logger');
 const api = require('./api');
+
 
 // Setup server.
 
@@ -15,11 +17,11 @@ configExpress(app);
 app.use('/', api);
 
 const server = app.listen(process.env.PORT);
-console.log(`Magic happens on port ${process.env.PORT}`);
+logger.info(`Magic happens on port ${process.env.PORT}`);
 
 const host = server.address().address;
 const port = server.address().port;
-console.log(`=> Bot Boilerplate starting on http://${host}:${port}`);
-console.log('=> Ctrl-C to shutdown server');
+logger.info(`=> Bot Boilerplate starting on http://${host}:${port}`);
+logger.info('=> Ctrl-C to shutdown server');
 
 module.exports = app;
