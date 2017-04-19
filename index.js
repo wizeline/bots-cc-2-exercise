@@ -13,6 +13,8 @@ const api = require('./api');
 const app = express();
 configExpress(app);
 
+app.use(express.static('public'));
+
 // Creating REST API
 app.use('/', api);
 

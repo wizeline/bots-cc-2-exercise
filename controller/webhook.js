@@ -1,6 +1,7 @@
 const logger = require('../config/logger');
 const echo = require('./echo');
 const sender = require('./sender');
+const sampleOutputs = require('./sample-outputs');
 
 const Webhook = () => ({
   /**
@@ -39,14 +40,52 @@ const Webhook = () => ({
           if (messagingEvent.message) {
             const message = messagingEvent.message;
             const messageText = message.text;
-            switch (messageText) {
+
+            switch (true) {
+              case /button/ig.test(messageText): {
+                messages = sampleOutputs.composeButtonMessage();
+                break;
+              }
+              case /image/ig.test(messageText): {
+                messages = sampleOutputs.composeImageMessage();
+                break;
+              }
+              case /gif/ig.test(messageText): {
+                messages = sampleOutputs.composeGifMessage();
+                break;
+              }
+              case /audio/ig.test(messageText): {
+                messages = sampleOutputs.composeAudioMessage();
+                break;
+              }
+              case /video/ig.test(messageText): {
+                messages = sampleOutputs.composeVideoMessage();
+                break;
+              }
+              case /receipt/ig.test(messageText): {
+                messages = sampleOutputs.composeReceiptMessage();
+                break;
+              }
+              case /single card/ig.test(messageText): {
+                messages = sampleOutputs.composeSingleCardMessage();
+                break;
+              }
+              case /card array/ig.test(messageText): {
+                messages = sampleOutputs.composeCardArrayMessage();
+                break;
+              }
+              case /help/ig.test(messageText):
+              case /quick reply/ig.test(messageText): {
+                messages = sampleOutputs.composeQuickReplyMessage();
+                break;
+              }
               default: {
                 messages = echo.composeMessage(messagingEvent);
                 break;
               }
             }
           } else {
-            // logger.warn('Webhook received unknown messagingEvent: ', messagingEvent);
+            logger.warn('Webhook received unknown messagingEvent: ', messagingEvent);
           }
 
           // Send each composed message
