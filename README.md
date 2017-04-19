@@ -2,6 +2,8 @@
 
 > Facebook messenger bot for Wizeline Academy - Bots Crash Course
 
+This course is Facebok Messenger quick start based, you can find more information and advanced examples [here.](https://developers.facebook.com/docs/messenger-platform)
+
 #### Pre-requisites
 
 - Latest node.js version
@@ -49,6 +51,34 @@ To get your access token go to
 Once you have setted all the values, just save as `.env` a new file at the root of repository
 
 **NOTE:**  For security reasons `.env` file will be ignored, to prevent sharing tokens on this repo
+
+#### Lectures
+
+The course is divided in sections that we are going to handle as branch stages
+
+- Build your own ECHO Bot
+
+```
+git checkout stage/echo
+```
+
+- Facebook Messenger sample outputs
+
+```
+git checkout stage/sample-outputs
+```
+
+- Deep dive on making API requests
+
+```
+git checkout stage/api-requests
+```
+
+- Guided - Add NLP
+
+```
+git checkout stage/nlp
+```
 
 
 #### Running the bot
