@@ -1,5 +1,5 @@
 const logger = require('../config/logger');
-const echo = require('./echo');
+const echo = require('../controller/echo');
 const sender = require('./sender');
 const sampleOutputs = require('./sample-outputs');
 
