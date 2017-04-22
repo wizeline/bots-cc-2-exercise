@@ -1,6 +1,6 @@
 const logger = require('../config/logger');
-const echo = require('./echo');
 const sender = require('./sender');
+const handler = require('../messageHandler/handler');
 
 const Webhook = () => ({
   /**
@@ -36,26 +36,38 @@ const Webhook = () => ({
           let messages = [];
 
           // By now we are only handling incoming messages
-          if (messagingEvent.message) {
-            const message = messagingEvent.message;
-            const messageText = message.text;
+          if (messagingEvent.message || messagingEvent.postback) {
+            const message = messagingEvent.message || messagingEvent.postback;
+            let messageText;
+            if (messagingEvent.message) {
+              messageText = message.text;
+            } else {
+              messageText = message.payload;
+            }
+            // select what platform we want to use
+            handler.SelectController(process.env.BOT_PLUGIN);
+
             switch (messageText) {
               default: {
-                messages = echo.composeMessage(messagingEvent);
+                handler.GetMessage(messageText)
+                  .then((outputMessages) => {
+                    // Send each composed message
+                    outputMessages.forEach((outputMessage, index) => {
+                      console.log('hrer', outputMessage);
+                      setTimeout(() => {
+                        sender
+                          .sendMessage(userID, outputMessage)
+                          .then(logger.info)
+                          .catch(logger.error);
+                      }, 1000 * index);
+                    });
+                  });
                 break;
               }
             }
           } else {
             // logger.warn('Webhook received unknown messagingEvent: ', messagingEvent);
           }
-
-          // Send each composed message
-          messages.forEach((message) => {
-            sender
-              .sendMessage(userID, message)
-              .then(logger.info)
-              .catch(logger.error);
-          });
         });
       });
     }

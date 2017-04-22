@@ -1,6 +1,6 @@
 // Compose the facebook echo message object to our
 class Echo {
-  composeMessage(messagingEvent) {
+  processMessage(messagingEvent) {
     if (messagingEvent.message && messagingEvent.message.is_echo) {
       // Subscribes to Message Echo Callback
       // Indicates the message was sent from the page itself
@@ -16,4 +16,4 @@ class Echo {
   }
 }
 
-module.exports = new Echo();
+module.exports = Echo;
