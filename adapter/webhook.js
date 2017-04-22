@@ -1,7 +1,7 @@
 const logger = require('../config/logger');
 const echo = require('../controller/echo');
+const sampleOutputs = require('../controller/sample-outputs');
 const sender = require('./sender');
-const sampleOutputs = require('./sample-outputs');
 
 const Webhook = () => ({
   /**
