@@ -1,10 +1,8 @@
-const Foursquare = require('../controller/foursquare');
 const Echo = require('../controller/echo');
 
 class Handler {
   constructor() {
     this.controllers = {
-      Foursquare: new Foursquare(),
       Echo: new Echo(),
     };
     this.controller = this.controllers[process.env.BOT_PLUGIN];

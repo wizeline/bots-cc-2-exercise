@@ -42,6 +42,9 @@ module.exports = (state, venues = undefined) => {
           });
           break;
         }
+        default: {
+          formattedMessage.push({ text: 'Something went wrong' });
+        }
       }
     });
     resolve(formattedMessage);
