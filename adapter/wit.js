@@ -5,8 +5,8 @@ class Wit {
     this.wit = new WitLib({accessToken: process.env.WIT_TOKEN});
   }
 
-  processMessage(session, message) {
-    return this.wit.message(message, session.context)
+  processMessage(message) {
+    return this.wit.message(message, {});
   }
 }
 
