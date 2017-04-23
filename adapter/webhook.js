@@ -35,6 +35,10 @@ const Webhook = () => ({
           const userID = messagingEvent.sender.id;
           let messages = [];
 
+          if(messagingEvent.isEcho){
+            return;
+          }
+
           // By now we are only handling incoming messages
           if (messagingEvent.message || messagingEvent.postback) {
             const message = messagingEvent.message || messagingEvent.postback;
