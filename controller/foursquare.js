@@ -91,8 +91,62 @@ class Foursquare {
   _parse(freeText) {
     return new Promise((resolve, reject) => {
       witParser.processMessage(freeText).then((witResult) => {
-        console.log(JSON.stringify(witResult, null, 2));
+        const entities = witResult.entities;
+        if (Object.keys(entities).length == 0) {
+          this.state = 'location';
+          this['_location']().then((message) => resolve(message));
+        } else {
+          let missing;
+          if (entities.location) {
+            foursquareUtils.setLocation(entities.location[0].value);
+          } else {
+            missing = true;
+            this.state = "location";
+            messageFormater(this.state)
+              .then((message) => {
+                this.state = 'resultLocation';
+                resolve(message);
+              });
+          }
+          if (entities.query) {
+            foursquareUtils.setQuery(entities.query[0].value);
+          } else {
+            missing = true;
+            this.state = recommended;
+            messageFormater(this.state)
+              .then((message) => {
+                message.splice(0, 0, { text: entities.location[0].value});
+                this.state = 'cuisine';
+                resolve(message);
+              });
+          }
+
+          if (!missing) {
+            foursquareUtils.makeRequest()
+            .then((result) => {
+              messageFormater('formatResult', result)
+                .then((message) => {
+                  this.state = 'repeat';
+                  resolve(message);
+                });
+            });
+          }
+        }
       });
+    });
+  }
+
+  _resultLocation(location) {
+    return new Promise((resolve, reject) => {
+      foursquareUtils.setLocation(location);
+      foursquareUtils.makeRequest()
+        .then((result) => {
+          messageFormater('formatResult', result)
+            .then((message) => {
+              this.state = 'repeat';
+              resolve(message);
+            });
+        });
     });
   }
 
