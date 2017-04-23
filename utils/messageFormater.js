@@ -12,7 +12,6 @@ module.exports = (state, venues = undefined) => {
     rawMessage = templates[state];
   }
 
-  console.log(rawMessage);
   const formattedMessage = [];
   return new Promise((resolve, reject) => {
     Object.keys(rawMessage).forEach((key) => {

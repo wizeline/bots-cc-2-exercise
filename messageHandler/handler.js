@@ -1,4 +1,3 @@
-
 const Foursquare = require('../controller/foursquare');
 const Echo = require('../controller/echo');
 
@@ -8,7 +7,7 @@ class Handler {
       Foursquare: new Foursquare(),
       Echo: new Echo(),
     };
-    this.controller = {};
+    this.controller = this.controllers[process.env.BOT_PLUGIN];
     this.testvalue = 0;
   }
 
@@ -19,7 +18,6 @@ class Handler {
   GetMessage(message) {
     return this.controller.processMessage(message);
   }
-
 }
 
 module.exports = new Handler();

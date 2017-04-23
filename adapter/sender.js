@@ -10,6 +10,7 @@ class Sender {
     };
     return this.callSendAPI();
   }
+
   callSendAPI() {
     const options = {
       uri: `${process.env.FB_GRAPH_API}/me/messages`,

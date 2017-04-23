@@ -1,5 +1,4 @@
 const logger = require('../config/logger');
-const echo = require('../controller/echo');
 const sender = require('./sender');
 const handler = require('../messageHandler/handler');
 
@@ -46,7 +45,6 @@ const Webhook = () => ({
               messageText = message.payload;
             }
             // select what platform we want to use
-            handler.SelectController(process.env.BOT_PLUGIN);
 
             switch (messageText) {
               default: {
@@ -54,7 +52,6 @@ const Webhook = () => ({
                   .then((outputMessages) => {
                     // Send each composed message
                     outputMessages.forEach((outputMessage, index) => {
-                      console.log('hrer', outputMessage);
                       setTimeout(() => {
                         sender
                           .sendMessage(userID, outputMessage)

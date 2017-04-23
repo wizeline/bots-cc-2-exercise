@@ -6,99 +6,89 @@ class Foursquare {
     this.clientID = process.env.CLIENT_ID;
     this.clientSecret = process.env.CLIENT_SECRET;
     this.state = 'intro';
-    this.states = {
-      intro: 'intro',
-      location: 'location',
-      recommended: 'recommended',
-      cuisine: 'cuisine',
-      customCuisine: 'customCuisine',
-      price: 'price',
-      result: 'result',
-      repeat: 'repeat',
-    };
   }
 
-  intro() {
+  _intro() {
     return new Promise((resolve, reject) => {
       messageFormater(this.state)
-        .then(message => {
-          this.state = this.states.location;
+        .then((message) => {
+          this.state = 'location';
           resolve(message);
         });
     });
   }
 
-  location() {
+  _location() {
     return new Promise((resolve, reject) => {
       messageFormater(this.state)
-        .then(message => {
-          this.state = this.states.recommended;
+        .then((message) => {
+          this.state = 'recommended';
           resolve(message);
         });
     });
   }
 
-  recommended(location) {
+  _recommended(location) {
     return new Promise((resolve, reject) => {
       foursquareUtils.setLocation(location);
       messageFormater(this.state)
         .then((message) => {
           message.splice(0, 0, { text: location });
-          this.state = this.states.cuisine;
+          this.state = 'cuisine';
           resolve(message);
         });
     });
   }
 
-  cuisine(query) {
+  _cuisine() {
     return new Promise((resolve, reject) => {
       messageFormater(this.state)
-        .then(message => {
-          this.state = this.states.result;
+        .then((message) => {
+          this.state = 'result';
           resolve(message);
         });
     });
   }
 
-  customCuisine(query) {
+  _customCuisine(query) {
     return new Promise((resolve, reject) => {
       messageFormater(this.state)
-        .then(message => {
+        .then((message) => {
           foursquareUtils.setQuery(query);
-          this.state = this.states.result;
+          this.state = 'result';
           resolve(message);
         });
     });
   }
 
-  result(query) {
+  _result(query) {
     return new Promise((resolve, reject) => {
       foursquareUtils.setQuery(query);
       foursquareUtils.makeRequest()
         .then((result) => {
           messageFormater('formatResult', result)
             .then((message) => {
-              this.state = this.states.repeat;
+              this.state = 'repeat';
               resolve(message);
             });
         });
     });
   }
 
-  repeat() {
+  _repeat() {
     return new Promise((resolve, reject) => {
       messageFormater(this.state)
-        .then(message => {
-          this.state = this.states.location;
+        .then((message) => {
+          this.state = 'location';
           resolve(message);
         });
     });
   }
 
   processMessage(userMessage) {
-    let step = this.states[this.state];
+    let step = `_${this.state}`;
     if (userMessage === 'Other') {
-      step = this.states.customCuisine;
+      step = '_customCuisine';
       this.state = step;
     }
     return this[step](userMessage);

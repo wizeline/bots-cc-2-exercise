@@ -1,7 +1,5 @@
 const requestPromise = require('request-promise');
 
-const BASE_API = 'https://api.foursquare.com/v2/venues/search';
-
 class FoursquareUtils {
   constructor() {
     this.params = {
@@ -23,7 +21,7 @@ class FoursquareUtils {
     console.log(this.params);
     const requestOptions = {
       method: 'GET',
-      uri: BASE_API,
+      uri: process.env.FOURSQUARE_API,
       qs: this.params,
       json: true,
     };
