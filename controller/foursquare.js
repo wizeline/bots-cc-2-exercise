@@ -1,5 +1,7 @@
 const messageFormater = require('../utils/messageFormater');
 const foursquareUtils = require('../utils/foursquareUtils');
+const wit = require('../adapter/wit');
+const witParser = new wit();
 
 class Foursquare {
   constructor() {
@@ -85,9 +87,21 @@ class Foursquare {
     });
   }
 
+  // NLP States
+  _parse(freeText) {
+    return new Promise((resolve, reject) => {
+      witParser.processMessage(freeText).then((witResult) => {
+        console.log(JSON.stringify(witResult, null, 2));
+      });
+    });
+  }
+
   processMessage(userMessage) {
     let step = `_${this.state}`;
-    if (userMessage === 'Other') {
+    if (step === '_location' && userMessage != "Let's do this!") {
+      step = '_parse';
+      this.state = 'parse';
+    } else if (userMessage === 'Other') {
       step = '_customCuisine';
       this.state = step;
     }
