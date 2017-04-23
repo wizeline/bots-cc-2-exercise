@@ -1,4 +1,4 @@
-// Compose the facebook echo message object to our
+// Compose the facebook echo message object
 class Echo {
   processMessage(messagingEvent) {
     if (messagingEvent.message && messagingEvent.message.is_echo) {

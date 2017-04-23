@@ -1,4 +1,5 @@
 const logger = require('../config/logger');
+const echo = require('../controller/echo');
 const sender = require('./sender');
 const handler = require('../messageHandler/handler');
 
