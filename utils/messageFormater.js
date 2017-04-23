@@ -34,7 +34,6 @@ module.exports = (state, venues = undefined) => {
               payload: reply.payload,
             });
           });
-
           // Remove last text to use it as button text
           const lastMessage = formattedMessage.pop().text;
           formattedMessage.push({

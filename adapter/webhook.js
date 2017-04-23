@@ -45,16 +45,12 @@ const Webhook = () => ({
             } else {
               messageText = message.payload;
             }
-            // select what platform we want to use
-            handler.SelectController(process.env.BOT_PLUGIN);
 
             switch (messageText) {
               default: {
                 handler.GetMessage(messageText)
                   .then((outputMessages) => {
-                    // Send each composed message
                     outputMessages.forEach((outputMessage, index) => {
-                      console.log('hrer', outputMessage);
                       setTimeout(() => {
                         sender
                           .sendMessage(userID, outputMessage)
