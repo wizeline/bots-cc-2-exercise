@@ -10,11 +10,11 @@ class Foursquare {
       intro: 'intro',
       location: 'location',
       recommended: 'recommended',
-      top5: 'top5',
       cuisine: 'cuisine',
       customCuisine: 'customCuisine',
       price: 'price',
       result: 'result',
+      repeat: 'repeat',
     };
   }
 
@@ -78,9 +78,19 @@ class Foursquare {
         .then((result) => {
           messageFormater('formatResult', result)
             .then((message) => {
-              this.state = this.states.intro;
+              this.state = this.states.repeat;
               resolve(message);
             });
+        });
+    });
+  }
+
+  repeat() {
+    return new Promise((resolve, reject) => {
+      messageFormater(this.state)
+        .then(message => {
+          this.state = this.states.location;
+          resolve(message);
         });
     });
   }

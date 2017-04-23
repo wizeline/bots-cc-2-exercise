@@ -81,8 +81,10 @@ module.exports = {
       'Ok, enter the name of the cuisine you\'re interested in',
     ],
   },
-  price: {
-
+  repeat: {
+    text: [
+      'Do you want to search for more restaurants?',
+    ],
   },
   formatResult: (restaurants) => {
     console.log(JSON.stringify(restaurants, null, 2));
